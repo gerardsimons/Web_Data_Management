@@ -94,17 +94,31 @@ public class MySimpleServer implements Container {
 	
 	       // get the collection 
 	       Collection col = DatabaseManager.getCollection(URI + collectionPath); 
-	       
+	       	
+	       System.out.println(URI + collectionPath);
 	       String[] xmlFiles = col.listResources();
 	       if(xmlFiles.length == 0) printLine(URI + collectionPath + " contains no children.");
+	       
+	       //String xQuery = "collection('.')/score-partwise[contains(lower-case(.),'" + title + "')]";
+	       String xQuery = "let $col := collection() for $doc in $col where contains($doc//movement-title,'Rigby') return <result><document>{document-uri($doc)}</document> {$doc} </result>";
+	       
+	       XQueryService service = (XQueryService) col.getService("XQueryService", "3.0");
+	       
+	       System.out.println(xQuery);
+	       
+	       service.setProperty("indent", "yes");
+	       
+	       result = service.query(xQuery);
+	       System.out.println(result.getSize() + " results found.");
+	       return result;
 	       // query a document 
 	       
 	       //String query = "doc("/db/project/music/john_lennon-eleano_rigby.xml')[contains(lower-case(score-partwise/movement-title),"rigby")]"
-	       
+	       /*
 	       for(int i = 0 ; i < xmlFiles.length ; i++)
 	       {
 	    	   String xmlFile = xmlFiles[i];
-	    	   String xQuery = "doc('" + xmlFile + "')/score-partwise[contains(lower-case(.),'" + title + "')]";
+	    	   String xQuery = "collection('.')/score-partwise[contains(lower-case(.),'" + title + "')]";
 	    	   System.out.println("Execute xQuery = " + xQuery); 
 		        
 			   // Instantiate a XQuery service 
@@ -127,10 +141,12 @@ public class MySimpleServer implements Container {
 				   result = res;
 			   }
 	       }
+	       */
 	       /*
 	       String xQuery = "for $x in doc('" + resourceName + "')//title where $x='" + title  
                    + "' return data($x)";
                    */ 
+	       
 		  
 	   }
 	   catch(ClassNotFoundException e)
@@ -174,13 +190,30 @@ public class MySimpleServer implements Container {
            System.out.println(e.getMessage());
        }
    }
+   
+   public void test()
+   {
+	 //executeScript();
+	  
+	   ResourceSet result = query("rigby");
+	   try{
+	   ResourceIterator ri = result.getIterator();
+	   
+	   while(ri.hasMoreResources())
+	   {
+		   System.out.println(ri.nextResource().getContent());
+	   }
+	   }
+	   catch(Exception e)
+	   {
+		   e.printStackTrace();
+	   }
+   }
 
    public static void main(String[] args) throws Exception {
-	   
-	  //executeScript();
 	   MySimpleServer myServer = new MySimpleServer();
-	   myServer.query("rigby");
-	   if(true)
+	   myServer.test();
+	   if(false)
 	   {
 		   Container container = new MySimpleServer();
 		   Server server = new ContainerServer(container);
