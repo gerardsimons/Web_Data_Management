@@ -1,0 +1,3 @@
+echo "Converting musicXML..."
+musicxml2ly musicXML.xml -o output/music.ly && lilypond --png --output=output/music.png output/music.ly 
+
