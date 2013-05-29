@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
+<script>
+
+var name = 'Gerard';
+var url = "http://localhost:1234";
+var description = 'This is a test run.';
+var itemName = 'Query';
+var query = 'doc("/db/project/movies/movies.xml")';
+
+
+
+var lookup = {
+    'name': name,
+    'description': description,
+    'items': [{
+        'name': itemName,
+        'value': query
+    }]
+};
+
+function sendJSON()
+{
+	console.log("Sending JSON");
+	
+	//$.getJSON( 'http://<url>/api.php?callback=?', function ( data ) { alert ( data ); } );
+	
+	var query = $('input[name=_query]').val();
+	
+	console.log("Sending query=" + query);
+	
+	$.ajax({
+    	type: 'GET',
+		crossDomain: true,
+    	url: url,
+	    data: {_query : query},
+	    dataType: "text",
+	    succes: function(result) { console.log(result); }
+    });
+}
+</script>
+</head>
+<body>
+<form name="input" on submit="#">
+	<input type="text" name="_query"></input>
+</form>
+<a href="javascript:sendJSON()">Send</a>
+</body>
+</html>
