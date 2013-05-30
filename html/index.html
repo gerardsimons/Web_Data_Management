@@ -43,9 +43,9 @@ function sendJSON()
 </script>
 </head>
 <body>
-<form name="input" on submit="#">
+<form name="input" method="get" action="http://localhost:1234">
 	<input type="text" name="_query"></input>
+	<input type="submit" name="Submit"></input>
 </form>
-<a href="javascript:sendJSON()">Send</a>
 </body>
 </html>

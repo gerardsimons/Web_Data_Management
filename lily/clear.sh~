@@ -1,3 +1,7 @@
-echo "Converting musicXML..."
-musicxml2ly musicXML.xml -o output/music.ly && lilypond --png output/music.ly --output=output/music.png
+echo "Clearing musicXMLs and output files..."
+BASEDIR=$(dirname $0)
+rm -rf $BASEDIR/*.png
+rm -rf $BASEDIR/*.pdf
+rm -rf $BASEDIR/*.xml
+rm -rf $BASEDIR/*.ly
 

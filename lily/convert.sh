@@ -1,2 +1,4 @@
-musicxml2ly $1 -o output/$1.ly && lilypond --png --output=output/$1 output/$1.ly
-echo output/$i.png
+DIR=$(dirname $0)
+echo "Parameter 1: $1"
+echo "Writing $1 to $1.ly and output/$1.png"
+musicxml2ly $DIR/input/$1 -o $DIR/input/$1.ly && lilypond --pdf --output=$DIR/output/$1 $DIR/input/$1.ly
